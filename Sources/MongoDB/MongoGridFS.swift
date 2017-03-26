@@ -398,9 +398,9 @@ public class GridFS {
     // perform actually query
     var plist: OpaquePointer?
     if filter == nil {
-      plist = mongoc_gridfs_find(handle, &query)
+      plist = mongoc_gridfs_find_with_opts(handle, &query, nil)
     }else {
-      plist = mongoc_gridfs_find(handle, filter?.doc)
+      plist = mongoc_gridfs_find_with_opts(handle, filter?.doc, nil)
     }//end if
 
     // release the query resource

@@ -446,6 +446,7 @@ public class MongoCollection {
      *
      *  - returns: Result object with status of save
     */
+    @available(*, deprecated)
     public func save(document doc: BSON) -> Result {
         guard let sdoc = doc.doc else {
             return .error(1, 1, "Invalid document")
@@ -568,6 +569,7 @@ public class MongoCollection {
      *
      *  - returns:	A cursor to the documents that match the query criteria. When the find() method “returns documents,” the method is actually returning a cursor to the documents.
     */
+    @available(*, deprecated)
     public func find(query: BSON = BSON(), fields: BSON? = nil, flags: MongoQueryFlag = MongoQueryFlag.none, skip: Int = 0, limit: Int = 0, batchSize: Int = 0) -> MongoCursor? {
 		//	@available(*, deprecated, message: "Use find(filter: BSON, options: BSON?)")
 
@@ -592,16 +594,16 @@ public class MongoCollection {
 	*
 	*  - returns:	A cursor to the documents that match the query criteria. When the find() method “returns documents,” the method is actually returning a cursor to the documents.
 	*/
-//	public func find(filter: BSON = BSON(), options: BSON? = nil) -> MongoCursor? {
-//		guard let ptr = self.ptr else {
-//			return nil
-//		}
-//		let cursor = mongoc_collection_find_with_opts(ptr, filter.doc, options?.doc, nil)
-//		guard cursor != nil else {
-//			return nil
-//		}
-//		return MongoCursor(rawPtr: cursor)
-//	}
+	public func find(filter: BSON = BSON(), options: BSON? = nil) -> MongoCursor? {
+		guard let ptr = self.ptr else {
+			return nil
+		}
+		let cursor = mongoc_collection_find_with_opts(ptr, filter.doc, options?.doc, nil)
+		guard cursor != nil else {
+			return nil
+		}
+		return MongoCursor(rawPtr: cursor)
+	}
 
     /**
      *  Creates indexes on collections.
